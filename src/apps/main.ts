@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
 import { VersioningType } from '@nestjs/common';
-import { setupSwagger } from './configs/swagger';
+import { setupSwagger } from 'src/configs/swagger';
 
 const serverConfig = config.get('server');
 
