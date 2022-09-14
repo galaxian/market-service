@@ -1,8 +1,10 @@
+import { Order } from 'src/apps/order/entity/order.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -40,6 +42,9 @@ export class Product {
 
   @Column({ default: 3 })
   deliveryDate: number;
+
+  @OneToMany(() => Order, (order) => order.product, { eager: false })
+  orders: Order[];
 
   @CreateDateColumn()
   createAt: Date;
