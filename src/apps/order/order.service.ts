@@ -2,8 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductService } from '../product/product.service';
+import { User } from '../user/entity/user.entity';
 import { UserService } from '../user/user.service';
 import { CreateOrderRequestDto } from './dto/create-order.dto';
+import { OrderDetailResponseDto } from './dto/order-response.dto';
 import { Order } from './entity/order.entity';
 
 @Injectable()
@@ -47,5 +49,19 @@ export class OrderService {
     const saveOrder = await this.orderRepository.save(order);
 
     return saveOrder.toDetailResponseDto();
+  }
+
+  async findAllMyOrder(userId: number): Promise<OrderDetailResponseDto[]> {
+    const findAllMyOrder = await this.orderRepository.find({
+      relations: ['user', 'product'],
+      where: { id: userId },
+    });
+
+    const result = [];
+    findAllMyOrder.forEach((order) => {
+      result.push(order.toDetailResponseDto());
+    });
+
+    return result;
   }
 }
