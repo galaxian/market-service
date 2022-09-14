@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -45,5 +46,16 @@ export class OrderController {
   ): Promise<OrderDetailResponseDto> {
     const userId: number = req.user.id;
     return this.orderService.findMyOrder(orderId, userId);
+  }
+
+  @Delete(':/id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
+  deleteMyOrder(
+    @Param('id', ParseIntPipe) orderId,
+    @Req() req,
+  ): Promise<{ id: number }> {
+    const userId: number = req.user.id;
+    return this.orderService.deleteMyOrder(orderId, userId);
   }
 }

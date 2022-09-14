@@ -90,4 +90,30 @@ export class OrderService {
 
     return findOrder.toDetailResponseDto();
   }
+
+  async deleteMyOrder(
+    orderId: number,
+    userId: number,
+  ): Promise<{ id: number }> {
+    const findOrder = await this.orderRepository.findOne({
+      relations: ['user', 'product'],
+      where: { id: orderId },
+    });
+
+    console.log(userId);
+
+    if (!findOrder) {
+      throw new NotFoundException('존재하지 않는 주문 내역입니다.');
+    }
+
+    if (userId !== findOrder.user.id) {
+      throw new UnauthorizedException('본인 주문 내역이 아닙니다');
+    }
+
+    const deleteOrderId = findOrder.id;
+
+    await this.orderRepository.delete(orderId);
+
+    return { id: deleteOrderId };
+  }
 }
