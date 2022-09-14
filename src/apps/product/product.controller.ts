@@ -11,7 +11,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { identity } from 'rxjs';
 import { Role } from '../user/decorator/role.decorator';
 import { Authority } from '../user/entity/user.authority';
 import { AuthGuard } from '../user/security/auth.guard';
