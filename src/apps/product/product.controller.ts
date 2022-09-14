@@ -5,10 +5,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { identity } from 'rxjs';
 import { Role } from '../user/decorator/role.decorator';
 import { Authority } from '../user/entity/user.authority';
 import { AuthGuard } from '../user/security/auth.guard';
@@ -43,5 +45,16 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<productDetailResponseDto> {
     return this.productService.findProduct(id);
+  }
+
+  @Put('/:id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  updateProduct(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() requestDto: CreateProductRequestDto,
+  ): Promise<productDetailResponseDto> {
+    return this.productService.updateProduct(id, requestDto);
   }
 }

@@ -45,4 +45,29 @@ export class ProductService {
 
     return findProduct.toDetailResponseDto();
   }
+
+  async updateProduct(
+    id: number,
+    requestDto: CreateProductRequestDto,
+  ): Promise<productDetailResponseDto> {
+    const findProduct = await this.productRepository.findOne({ where: { id } });
+
+    if (!findProduct) {
+      throw new NotFoundException('상품이 존재하지 않습니다.');
+    }
+
+    findProduct.deliveryDate = requestDto.deliveryDate;
+    findProduct.deliveryFee = requestDto.deliveryFee;
+    findProduct.images = requestDto.images;
+    findProduct.isSoldOut = requestDto.isSoldOut;
+    findProduct.mainImage = requestDto.mainImage;
+    findProduct.origin = requestDto.origin;
+    findProduct.price = requestDto.price;
+    findProduct.productName = requestDto.productName;
+    findProduct.sale = requestDto.sale;
+
+    const result = await this.productRepository.save(findProduct);
+
+    return result.toDetailResponseDto();
+  }
 }
