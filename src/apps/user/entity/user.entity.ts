@@ -43,12 +43,4 @@ export class User {
       authority: this.authority,
     };
   }
-
-  static from(email: string, password: string, username: string) {
-    const user = new User();
-    user.email = email;
-    user.password = password;
-    user.username = username;
-    return user;
-  }
 }
