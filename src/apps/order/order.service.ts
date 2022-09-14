@@ -116,4 +116,16 @@ export class OrderService {
 
     return { id: deleteOrderId };
   }
+
+  async findAllOrder(): Promise<OrderDetailResponseDto[]> {
+    const findAllOrder = await this.orderRepository.find();
+
+    const result: OrderDetailResponseDto[] = [];
+
+    findAllOrder.forEach((order) => {
+      result.push(order.toDetailResponseDto());
+    });
+
+    return result;
+  }
 }

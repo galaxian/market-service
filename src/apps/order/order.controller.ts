@@ -10,9 +10,13 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Version,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { Role } from '../user/decorator/role.decorator';
+import { Authority } from '../user/entity/user.authority';
 import { AuthGuard } from '../user/security/auth.guard';
+import { RoleGuard } from '../user/security/role.guard';
 import { CreateOrderRequestDto } from './dto/create-order.dto';
 import { OrderDetailResponseDto } from './dto/order-response.dto';
 import { OrderService } from './order.service';
@@ -57,5 +61,14 @@ export class OrderController {
   ): Promise<{ id: number }> {
     const userId: number = req.user.id;
     return this.orderService.deleteMyOrder(orderId, userId);
+  }
+
+  @Get()
+  @Version('2')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  findAllOrder(): Promise<OrderDetailResponseDto[]> {
+    return this.orderService.findAllOrder();
   }
 }
