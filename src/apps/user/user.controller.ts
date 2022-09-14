@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Req,
   Res,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { rmSync } from 'fs';
+import { Request, Response } from 'express';
 import { UserReqeustDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
+import { AuthGuard } from './security/auth.guard';
 import { UserService } from './user.service';
 
 @Controller({ path: '/users', version: ['1', '2'] })
@@ -31,5 +34,12 @@ export class UserController {
     const jwt = await this.userService.validateUser(userReqeustDto);
     res.setHeader('Authorization', 'Bearer ' + jwt.accessToken);
     return res.json(jwt);
+  }
+
+  @Get('/authentipicate')
+  @UseGuards(AuthGuard)
+  isAuthenticated(@Req() req: Request): any {
+    const user: any = req.user;
+    return user;
   }
 }

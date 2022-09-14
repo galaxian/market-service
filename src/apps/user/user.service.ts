@@ -9,8 +9,8 @@ import { UserReqeustDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { User } from './entity/user.entity';
 import * as bcrypt from 'bcrypt';
-import { Payload } from 'aws-sdk/clients/iotdata';
 import { JwtService } from '@nestjs/jwt';
+import { Payload } from './security/payload.interface';
 
 @Injectable()
 export class UserService {
@@ -46,7 +46,7 @@ export class UserService {
   }
 
   async findUserByfield(
-    options: FindOneOptions<UserReqeustDto>,
+    options: FindOneOptions<User>,
   ): Promise<User | undefined> {
     return await this.userRepository.findOne(options);
   }
@@ -72,5 +72,11 @@ export class UserService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async tokenValidateUser(payload: Payload): Promise<User> {
+    return await this.findUserByfield({
+      where: { id: payload.id },
+    });
   }
 }
