@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { productDetailResponseDto } from '../dto/product-detail-response.dto';
 
 @Entity()
 export class Product {
@@ -36,8 +37,8 @@ export class Product {
   @Column({ default: 'Korea' })
   origin: string;
 
-  @Column()
-  deliveryDate: Date;
+  @Column({ default: 3 })
+  deliveryDate: number;
 
   @CreateDateColumn()
   createAt: Date;
@@ -47,4 +48,19 @@ export class Product {
 
   @DeleteDateColumn()
   deleteAt: Date;
+
+  toDetailResponseDto(): productDetailResponseDto {
+    return {
+      id: this.id,
+      productName: this.productName,
+      price: this.price,
+      deliveryFee: this.deliveryFee,
+      deliveryDate: this.deliveryDate,
+      origin: this.origin,
+      images: this.images,
+      mainImage: this.mainImage,
+      isSoldOut: this.isSoldOut,
+      sale: this.sale,
+    };
+  }
 }
