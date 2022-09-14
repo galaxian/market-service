@@ -128,4 +128,17 @@ export class OrderService {
 
     return result;
   }
+
+  async findOrder(id: number): Promise<OrderDetailResponseDto> {
+    const findOrder = await this.orderRepository.findOne({
+      relations: ['user', 'product'],
+      where: { id: id },
+    });
+
+    if (!findOrder) {
+      throw new NotFoundException('존재하지 않는 주문 내역입니다.');
+    }
+
+    return findOrder.toDetailResponseDto();
+  }
 }

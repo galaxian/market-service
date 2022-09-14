@@ -71,4 +71,13 @@ export class OrderController {
   findAllOrder(): Promise<OrderDetailResponseDto[]> {
     return this.orderService.findAllOrder();
   }
+
+  @Get('/:id')
+  @Version('2')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  findOrder(@Param('id') id: number): Promise<OrderDetailResponseDto> {
+    return this.orderService.findOrder(id);
+  }
 }
