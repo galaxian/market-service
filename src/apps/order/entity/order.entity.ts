@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrderDetailResponseDto } from '../dto/order-response.dto';
 import { OrderStatus } from './order.status';
 
 @Entity()
@@ -39,4 +40,16 @@ export class Order {
 
   @DeleteDateColumn()
   deleteAt: Date;
+
+  toDetailResponseDto(): OrderDetailResponseDto {
+    return {
+      id: this.id,
+      quantity: this.quantity,
+      orderStatus: this.orderStatus,
+      totalPrice: this.totalPrice,
+      createAt: this.createAt,
+      user: this.user.toResponseDto(),
+      product: this.product.toDetailResponseDto(),
+    };
+  }
 }
