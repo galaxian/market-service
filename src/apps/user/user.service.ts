@@ -1,16 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { UserReqeustDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { User } from './entity/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Payload } from 'aws-sdk/clients/iotdata';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUpUser(userRequestDto: UserReqeustDto): Promise<UserResponseDto> {
@@ -42,5 +49,28 @@ export class UserService {
     options: FindOneOptions<UserReqeustDto>,
   ): Promise<User | undefined> {
     return await this.userRepository.findOne(options);
+  }
+
+  async validateUser(
+    userRequestDto: UserReqeustDto,
+  ): Promise<{ accessToken: string } | undefined> {
+    const findUser: User = await this.findUserByfield({
+      where: { username: userRequestDto.username },
+    });
+
+    const validPassword = await bcrypt.compare(
+      userRequestDto.password,
+      findUser.password,
+    );
+
+    if (!findUser || !validPassword) {
+      throw new UnauthorizedException();
+    }
+
+    const payload: Payload = { id: findUser.id };
+
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
   }
 }
