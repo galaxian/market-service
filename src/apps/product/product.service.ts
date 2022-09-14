@@ -70,4 +70,18 @@ export class ProductService {
 
     return result.toDetailResponseDto();
   }
+
+  async deleteProduct(id: number): Promise<{ id: number }> {
+    const findProduct = await this.productRepository.findOne({ where: { id } });
+
+    if (!findProduct) {
+      throw new NotFoundException('상품이 존재하지 않습니다.');
+    }
+
+    const deleteId = { id: findProduct.id };
+
+    await this.productRepository.delete(id);
+
+    return deleteId;
+  }
 }

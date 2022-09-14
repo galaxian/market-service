@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -56,5 +57,15 @@ export class ProductController {
     @Body() requestDto: CreateProductRequestDto,
   ): Promise<productDetailResponseDto> {
     return this.productService.updateProduct(id, requestDto);
+  }
+
+  @Delete('/:id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  deleteProduct(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ id: number }> {
+    return this.productService.deleteProduct(id);
   }
 }
