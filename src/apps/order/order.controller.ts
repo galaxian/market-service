@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Req,
   UseGuards,
@@ -32,5 +34,16 @@ export class OrderController {
   findAllMyOrder(@Req() req: Request): Promise<OrderDetailResponseDto[]> {
     const userId: number = req.body.id;
     return this.orderService.findAllMyOrder(userId);
+  }
+
+  @Get('/:id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
+  findMyOrder(
+    @Param('id', ParseIntPipe) orderId,
+    @Req() req,
+  ): Promise<OrderDetailResponseDto> {
+    const userId: number = req.user.id;
+    return this.orderService.findMyOrder(orderId, userId);
   }
 }
