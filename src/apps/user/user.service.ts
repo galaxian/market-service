@@ -67,7 +67,7 @@ export class UserService {
       throw new UnauthorizedException();
     }
 
-    const payload: Payload = { id: findUser.id };
+    const payload: Payload = { id: findUser.id, authority: findUser.authority };
 
     return {
       accessToken: this.jwtService.sign(payload),
