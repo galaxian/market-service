@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   UseGuards,
   UsePipes,
@@ -33,5 +35,13 @@ export class ProductController {
   @Get()
   findAllProduct(): Promise<ProductResponseDto[]> {
     return this.productService.findAllProduct();
+  }
+
+  @Get('/:id')
+  @UsePipes(ValidationPipe)
+  findProduct(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<productDetailResponseDto> {
+    return this.productService.findProduct(id);
   }
 }
