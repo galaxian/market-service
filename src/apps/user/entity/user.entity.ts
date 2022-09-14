@@ -1,0 +1,36 @@
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Authority } from './user.authority';
+
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ type: 'varchar', length: 30 })
+  email: string;
+
+  @Column({ type: 'varchar', length: 20 })
+  username: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  password: string;
+
+  @Column({ type: 'enum', enum: Authority, default: Authority.USER })
+  authority: Authority;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
+}
