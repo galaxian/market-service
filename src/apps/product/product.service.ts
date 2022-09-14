@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 import { productDetailResponseDto } from './dto/product-detail-response.dto';
 import { ProductResponseDto } from './dto/product.dto';
@@ -83,5 +83,11 @@ export class ProductService {
     await this.productRepository.delete(id);
 
     return deleteId;
+  }
+
+  async findProductByfield(
+    options: FindOneOptions<Product>,
+  ): Promise<Product | undefined> {
+    return await this.productRepository.findOne(options);
   }
 }
