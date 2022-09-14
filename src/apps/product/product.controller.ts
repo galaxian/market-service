@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UseGuards,
   UsePipes,
@@ -12,6 +13,7 @@ import { AuthGuard } from '../user/security/auth.guard';
 import { RoleGuard } from '../user/security/role.guard';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 import { productDetailResponseDto } from './dto/product-detail-response.dto';
+import { ProductResponseDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 
 @Controller({ path: '/products', version: ['1', '2'] })
@@ -26,5 +28,10 @@ export class ProductController {
     @Body() requestDto: CreateProductRequestDto,
   ): Promise<productDetailResponseDto> {
     return this.productService.createProduct(requestDto);
+  }
+
+  @Get()
+  findAllProduct(): Promise<ProductResponseDto[]> {
+    return this.productService.findAllProduct();
   }
 }

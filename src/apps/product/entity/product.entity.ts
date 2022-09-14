@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { productDetailResponseDto } from '../dto/product-detail-response.dto';
+import { ProductResponseDto } from '../dto/product.dto';
 
 @Entity()
 export class Product {
@@ -60,6 +61,17 @@ export class Product {
       images: this.images,
       mainImage: this.mainImage,
       isSoldOut: this.isSoldOut,
+      sale: this.sale,
+    };
+  }
+
+  toResponseDto(): ProductResponseDto {
+    return {
+      id: this.id,
+      productName: this.productName,
+      isSoldOut: this.isSoldOut,
+      mainImage: this.mainImage,
+      price: this.price,
       sale: this.sale,
     };
   }
