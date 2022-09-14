@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductService } from '../product/product.service';
-import { User } from '../user/entity/user.entity';
 import { UserService } from '../user/user.service';
 import { CreateOrderRequestDto } from './dto/create-order.dto';
 import { OrderDetailResponseDto } from './dto/order-response.dto';
