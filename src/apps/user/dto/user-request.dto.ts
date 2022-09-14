@@ -1,12 +1,13 @@
 import { IsNotEmpty } from 'class-validator';
+import { User } from '../entity/user.entity';
 
 export class UserReqeustDto {
   @IsNotEmpty()
-  email: string;
+  readonly email: string;
 
   @IsNotEmpty()
-  password: string;
+  readonly password: string;
 
   @IsNotEmpty()
-  username: string;
+  readonly username: string;
 }
