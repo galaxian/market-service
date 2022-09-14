@@ -80,4 +80,13 @@ export class OrderController {
   findOrder(@Param('id') id: number): Promise<OrderDetailResponseDto> {
     return this.orderService.findOrder(id);
   }
+
+  @Delete('/:id')
+  @Version('2')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  deleteOrder(@Param('id', ParseIntPipe) id: number): Promise<{ id: number }> {
+    return this.orderService.deleteOrder(id);
+  }
 }

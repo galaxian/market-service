@@ -141,4 +141,21 @@ export class OrderService {
 
     return findOrder.toDetailResponseDto();
   }
+
+  async deleteOrder(id: number): Promise<{ id: number }> {
+    const findOrder = await this.orderRepository.findOne({
+      relations: ['user', 'product'],
+      where: { id: id },
+    });
+
+    if (!findOrder) {
+      throw new NotFoundException('존재하지 않는 주문 내역입니다.');
+    }
+
+    const deleteOrderId = findOrder.id;
+
+    await this.orderRepository.delete(id);
+
+    return { id: deleteOrderId };
+  }
 }
