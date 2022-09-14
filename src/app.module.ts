@@ -5,9 +5,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './apps/product/product.module';
 import { UserModule } from './apps/user/user.module';
+import { OrderModule } from './apps/order/order.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule, ProductModule],
+  imports: [
+    TypeOrmModule.forRoot(typeORMConfig),
+    UserModule,
+    ProductModule,
+    OrderModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

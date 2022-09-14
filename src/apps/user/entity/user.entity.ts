@@ -1,8 +1,10 @@
+import { Order } from 'src/apps/order/entity/order.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,6 +27,9 @@ export class User {
 
   @Column({ type: 'enum', enum: Authority, default: Authority.USER })
   authority: Authority;
+
+  @OneToMany(() => Order, (order) => order.user, { eager: false })
+  orders: Order[];
 
   @CreateDateColumn()
   createAt: Date;
