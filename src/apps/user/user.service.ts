@@ -18,11 +18,22 @@ export class UserService {
       where: { email: userRequestDto.email },
     });
 
+    const { email, username, password } = userRequestDto;
+
     if (findUser) {
       throw new BadRequestException('email 또는 아이디가 이미 존재합니다.');
     }
 
-    const saveUser: User = await this.userRepository.save(userRequestDto);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user: User = this.userRepository.create({
+      email,
+      username,
+      password: hashedPassword,
+    });
+
+    const saveUser: User = await this.userRepository.save(user);
 
     return saveUser.toResponseDto();
   }
