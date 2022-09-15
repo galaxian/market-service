@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +12,7 @@ import { User } from './entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Payload } from './security/payload.interface';
+import { Authority } from './entity/user.authority';
 
 @Injectable()
 export class UserService {
@@ -78,5 +80,23 @@ export class UserService {
     return await this.findUserByfield({
       where: { id: payload.id },
     });
+  }
+
+  async updateAuthorityAdmin(id: number): Promise<{ authority: Authority }> {
+    const findUser = await this.findUserByfield({ where: { id } });
+
+    if (!findUser) {
+      throw new NotFoundException('존재하지 않는 사용자 입니다.');
+    }
+
+    if (findUser.authority === Authority.ADMIN) {
+      throw new BadRequestException('이미 관리자 권한을 가진 사용자입니다.');
+    }
+
+    findUser.authority = Authority.ADMIN;
+
+    const saveUser = await this.userRepository.save(findUser);
+
+    return { authority: saveUser.authority };
   }
 }

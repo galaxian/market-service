@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateProductRequestDto {
   @ApiProperty({
@@ -8,6 +14,8 @@ export class CreateProductRequestDto {
     description: '상품 이름',
   })
   @IsNotEmpty()
+  @IsString()
+  @MaxLength(50)
   productName: string;
 
   @ApiProperty({
@@ -15,6 +23,7 @@ export class CreateProductRequestDto {
     example: 15000,
     description: '상품 가격',
   })
+  @IsNumber()
   @IsNotEmpty()
   price: number;
 
@@ -23,6 +32,7 @@ export class CreateProductRequestDto {
     example: 1000,
     description: '배송비',
   })
+  @IsNumber()
   deliveryFee: number;
 
   @ApiProperty({
@@ -30,6 +40,8 @@ export class CreateProductRequestDto {
     example: 'Korea',
     description: '원산지',
   })
+  @IsString()
+  @MaxLength(20)
   origin: string;
 
   @ApiProperty({
@@ -37,6 +49,7 @@ export class CreateProductRequestDto {
     example: 1000,
     description: '할인 금액',
   })
+  @IsNumber()
   sale: number;
 
   @ApiProperty({
@@ -45,6 +58,7 @@ export class CreateProductRequestDto {
     description: '메인 이미지 url',
   })
   @IsNotEmpty()
+  @IsString()
   mainImage: string;
 
   @ApiProperty({
@@ -53,6 +67,7 @@ export class CreateProductRequestDto {
     description: '상품 정보 이미지 url',
   })
   @IsNotEmpty()
+  @IsString()
   images: string;
 
   @ApiProperty({
@@ -60,6 +75,7 @@ export class CreateProductRequestDto {
     example: false,
     description: '매진 유무',
   })
+  @IsBoolean()
   isSoldOut: boolean;
 
   @ApiProperty({
@@ -67,5 +83,6 @@ export class CreateProductRequestDto {
     example: 3,
     description: '배송 예정일',
   })
+  @IsNumber()
   deliveryDate: number;
 }

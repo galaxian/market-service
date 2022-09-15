@@ -80,7 +80,7 @@ export class OrderController {
       '토큰을 사용해 본인을 인증하고 본인의 주문 내역을 취소하는 api',
   })
   @ApiBearerAuth('access-token')
-  @Delete(':/id')
+  @Delete('/:id')
   @Version('1')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)

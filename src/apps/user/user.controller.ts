@@ -2,7 +2,10 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -12,9 +15,12 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
+import { Role } from './decorator/role.decorator';
 import { UserReqeustDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
+import { Authority } from './entity/user.authority';
 import { AuthGuard } from './security/auth.guard';
+import { RoleGuard } from './security/role.guard';
 import { UserService } from './user.service';
 
 @ApiTags('회원가입 및 로그인 Api')
@@ -60,5 +66,21 @@ export class UserController {
   isAuthenticated(@Req() req: Request): any {
     const user: any = req.user;
     return user;
+  }
+
+  @ApiOperation({
+    summary: '관리자 권한 부여 api',
+    description: '관리자가 새로운 관리자에게 권한을 부여할 수 있는 api',
+  })
+  @ApiBearerAuth('access-token')
+  @Put('/:id')
+  @Version('2')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard, RoleGuard)
+  @Role(Authority.ADMIN)
+  updateAuthorityAdmin(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ authority: Authority }> {
+    return this.userService.updateAuthorityAdmin(id);
   }
 }

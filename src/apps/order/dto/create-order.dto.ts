@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { OrderStatus } from '../entity/order.status';
 
 export class CreateOrderRequestDto {
@@ -9,6 +9,7 @@ export class CreateOrderRequestDto {
     description: '구매 수량',
   })
   @IsNotEmpty()
+  @IsNumber()
   quantity: number;
 
   @ApiProperty({
@@ -25,5 +26,6 @@ export class CreateOrderRequestDto {
     description: '상품 pk',
   })
   @IsNotEmpty()
+  @IsNumber()
   productId: number;
 }
