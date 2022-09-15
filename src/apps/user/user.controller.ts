@@ -10,7 +10,7 @@ import {
   ValidationPipe,
   Version,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { UserReqeustDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
@@ -53,6 +53,7 @@ export class UserController {
     summary: '토큰 검사 api',
     description: 'access token을 테스트 하는 api',
   })
+  @ApiBearerAuth('access-token')
   @Get('/authentipicate')
   @Version('1')
   @UseGuards(AuthGuard)

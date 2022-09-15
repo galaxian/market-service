@@ -12,7 +12,7 @@ import {
   ValidationPipe,
   Version,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from '../user/decorator/role.decorator';
 import { Authority } from '../user/entity/user.authority';
 import { AuthGuard } from '../user/security/auth.guard';
@@ -31,6 +31,7 @@ export class ProductController {
     summary: '상품 등록 api',
     description: '관리자가 상품 정보를 받아 DB에 등록하는 api',
   })
+  @ApiBearerAuth('access-token')
   @Post('/')
   @Version('2')
   @UsePipes(ValidationPipe)
@@ -69,6 +70,7 @@ export class ProductController {
     summary: '상품 정보 수정 api',
     description: '관리자가 상품 정보를 받아 수정하는 api',
   })
+  @ApiBearerAuth('access-token')
   @Put('/:id')
   @Version('2')
   @UsePipes(ValidationPipe)
@@ -85,6 +87,7 @@ export class ProductController {
     summary: '상품 정보 삭제 api',
     description: '관리자가 상품을 DB에서 삭제하는 api',
   })
+  @ApiBearerAuth('access-token')
   @Delete('/:id')
   @Version('2')
   @UsePipes(ValidationPipe)
