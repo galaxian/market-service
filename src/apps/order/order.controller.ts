@@ -33,6 +33,7 @@ export class OrderController {
       '상품 주문에 필요한 데이터를 받아 주문 내역을 DB에 등록하는 api',
   })
   @Post()
+  @Version('1')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   createOrder(@Body() requestDto: CreateOrderRequestDto, @Req() req: Request) {
@@ -46,6 +47,7 @@ export class OrderController {
       '토큰을 사용하여 본인을 인증하고 본인 주문 내역을 전체 조회하는 api',
   })
   @Get()
+  @Version('1')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   findAllMyOrder(@Req() req: Request): Promise<OrderDetailResponseDto[]> {
@@ -58,6 +60,7 @@ export class OrderController {
     description: '토큰을 사용해 본인을 인증하고 본인 주문 내역을 조회하는 api',
   })
   @Get('/:id')
+  @Version('1')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   findMyOrder(
@@ -74,6 +77,7 @@ export class OrderController {
       '토큰을 사용해 본인을 인증하고 본인의 주문 내역을 취소하는 api',
   })
   @Delete(':/id')
+  @Version('1')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   deleteMyOrder(

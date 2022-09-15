@@ -10,6 +10,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Version,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from '../user/decorator/role.decorator';
@@ -31,6 +32,7 @@ export class ProductController {
     description: '관리자가 상품 정보를 받아 DB에 등록하는 api',
   })
   @Post('/')
+  @Version('2')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard, RoleGuard)
   @Role(Authority.ADMIN)
@@ -45,6 +47,7 @@ export class ProductController {
     description: 'DB에 등록된 모든 상품들을 전체 조회하는 api',
   })
   @Get()
+  @Version('1')
   findAllProduct(): Promise<ProductResponseDto[]> {
     return this.productService.findAllProduct();
   }
@@ -54,6 +57,7 @@ export class ProductController {
     description: '상품 pk를 사용하여 상품을 상세히 조회하는 api',
   })
   @Get('/:id')
+  @Version('1')
   @UsePipes(ValidationPipe)
   findProduct(
     @Param('id', ParseIntPipe) id: number,
@@ -66,6 +70,7 @@ export class ProductController {
     description: '관리자가 상품 정보를 받아 수정하는 api',
   })
   @Put('/:id')
+  @Version('2')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard, RoleGuard)
   @Role(Authority.ADMIN)
@@ -81,6 +86,7 @@ export class ProductController {
     description: '관리자가 상품을 DB에서 삭제하는 api',
   })
   @Delete('/:id')
+  @Version('2')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard, RoleGuard)
   @Role(Authority.ADMIN)
