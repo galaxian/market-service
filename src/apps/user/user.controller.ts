@@ -68,6 +68,11 @@ export class UserController {
     return user;
   }
 
+  @ApiOperation({
+    summary: '관리자 권한 부여 api',
+    description: '관리자가 새로운 관리자에게 권한을 부여할 수 있는 api',
+  })
+  @ApiBearerAuth('access-token')
   @Put('/:id')
   @Version('2')
   @UsePipes(ValidationPipe)
