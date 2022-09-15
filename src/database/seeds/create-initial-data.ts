@@ -1,4 +1,3 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/apps/order/entity/order.entity';
 import { OrderStatus } from 'src/apps/order/entity/order.status';
 import { Product } from 'src/apps/product/entity/product.entity';
