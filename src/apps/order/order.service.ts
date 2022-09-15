@@ -117,7 +117,9 @@ export class OrderService {
   }
 
   async findAllOrder(): Promise<OrderDetailResponseDto[]> {
-    const findAllOrder = await this.orderRepository.find();
+    const findAllOrder = await this.orderRepository.find({
+      relations: ['user', 'product'],
+    });
 
     const result: OrderDetailResponseDto[] = [];
 
