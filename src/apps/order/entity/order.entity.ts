@@ -17,10 +17,10 @@ export class Order {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ type: 'int' })
   quantity: number;
 
-  @Column()
+  @Column({ type: 'int' })
   totalPrice: number;
 
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.READY })

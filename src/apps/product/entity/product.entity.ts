@@ -16,31 +16,31 @@ export class Product {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 75 })
   productName: string;
 
-  @Column({ default: 1000 })
+  @Column({ type: 'int', default: 1000 })
   deliveryFee: number;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   isSoldOut: boolean;
 
-  @Column()
+  @Column({ type: 'varchar' })
   mainImage: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   images: string;
 
-  @Column()
+  @Column({ type: 'int' })
   price: number;
 
-  @Column({ default: 0 })
+  @Column({ type: 'int', default: 0 })
   sale: number;
 
-  @Column({ default: 'Korea' })
+  @Column({ type: 'varchar', length: 25, default: 'Korea' })
   origin: string;
 
-  @Column({ default: 3 })
+  @Column({ type: 'int', default: 3 })
   deliveryDate: number;
 
   @OneToMany(() => Order, (order) => order.product, { eager: false })
