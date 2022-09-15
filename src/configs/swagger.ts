@@ -7,6 +7,15 @@ export function setupSwagger(app: INestApplication): void {
     .setDescription('market-service API description')
     .setVersion('1.0.0')
     .addTag('api')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        name: 'JWT',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
